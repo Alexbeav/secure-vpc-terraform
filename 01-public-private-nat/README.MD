@@ -1,21 +1,48 @@
-# Secure VPC Terraform Lab
+# Scenario 01: Public + Private Subnets with NAT Gateway
 
-This project provisions a basic AWS VPC using Terraform as part of a secure cloud infrastructure lab.
+## 📌 Overview
+This Terraform scenario provisions a secure AWS VPC with:
+- A public subnet for internet-facing resources (e.g., bastion host).
+- A private subnet for internal resources (e.g., backend services).
+- A NAT Gateway in the public subnet to allow the private subnet to initiate outbound internet access.
 
-## Features
+## 🧰 What’s Deployed
+- 1x VPC with CIDR block (e.g. `10.0.0.0/16`)
+- 1x Internet Gateway
+- 1x NAT Gateway (with EIP)
+- 1x Public subnet with a public EC2 instance
+- 1x Private subnet with a private EC2 instance
+- Route tables, associations, and security group rules
 
-- VPC with customizable CIDR
-- Terraform best practices (remote state, variable use, version pinning)
-- GitHub-integrated, tfsec scanned
+## 🧪 Use Cases
+- Bastion host to SSH into private EC2
+- Isolated backend resources that can update packages (via NAT)
+- Demonstrating VPC segmentation best practices
 
-## Getting Started
+## ✅ Prerequisites
+- AWS CLI and Terraform installed
+- IAM Identity Center / AWS credentials configured (`aws configure sso`)
+- SSH key pair (`~/.ssh/lab-key.pem`) exists and matches `terraform.tfvars`
+- Your IP is allowlisted for SSH in the security group
+
+## 🚀 Usage
+
+Creating the lab
 
 ```bash
+cd 01-public-private-nat
 terraform init
 terraform plan
 terraform apply
+```
 
-Requirements
-- Terraform >= 1.4
-- AWS account with IAM Identity Center
-- CLI profile configured (e.g., crosstalkis-admin)
+Destroying the lab
+```bash
+terraform destroy
+```
+
+## 🔒 Notes
+
+- This setup is for lab/demo use — do not use these security group rules in production.
+- Public EC2 has a public IP; private EC2 does not.
+- NAT Gateway incurs cost even when idle.

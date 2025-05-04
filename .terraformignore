@@ -1,0 +1,7 @@
+*.tfvars
+*.pem
+*.pub
+*.key
+*.zip
+.DS_Store
+*.log

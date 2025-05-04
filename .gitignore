@@ -1,12 +1,24 @@
-# Terraform state and cache
-.terraform/
+# Terraform state files
 *.tfstate
 *.tfstate.backup
+
+# Terraform crash log
+crash.log
+
+# Terraform CLI metadata
+.terraform/
 .terraform.lock.hcl
 
-# VS Code settings (optional)
-.vscode/
+# Sensitive files
+*.pem
+*.pub
 
-# OS/Editor files
+# User-defined variable files
+terraform.tfvars
+terraform.tfvars.json
+
+# Editor / system files
+.vscode/
+.idea/
 .DS_Store
-*.swp
+*.code-workspace

@@ -9,4 +9,4 @@ repos:
     rev: v1.28.1
     hooks:
       - id: tfsec
-        args: ["--minimum-severity=high"]
+        args: ["--minimum-severity=high", "--include-ignored", "--exclude-downloaded-modules"]
