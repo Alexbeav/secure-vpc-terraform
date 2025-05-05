@@ -18,7 +18,9 @@ terraform.tfvars
 terraform.tfvars.json
 
 # Editor / system files
+**/.vscode/
 .vscode/
 .idea/
 .DS_Store
 *.code-workspace
+secure-vpc-terraform.code-workspace
