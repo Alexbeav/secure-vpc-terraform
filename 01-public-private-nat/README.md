@@ -140,7 +140,7 @@ To run manually:
 
 ## 📄 License
 
-This project is licensed under the MIT License. See LICENSE for details.
+This project is licensed under the MIT License. See [LICENSE](https://github.com/Alexbeav/secure-vpc-terraform/blob/main/LICENSE) for details.
 
 ## 🏷️ Version
 
