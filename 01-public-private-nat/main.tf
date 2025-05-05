@@ -15,6 +15,7 @@ module "networking" {
   availability_zone   = var.availability_zone
   public_subnet_cidr  = var.public_subnet_cidr
   private_subnet_cidr = var.private_subnet_cidr
+  my_ip               = var.my_ip
   tags                = var.tags
 }
 

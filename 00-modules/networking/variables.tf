@@ -25,3 +25,7 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+variable "my_ip" {
+  description = "User's public IP in CIDR format (e.g., 1.2.3.4/32)"
+  type        = string
+}

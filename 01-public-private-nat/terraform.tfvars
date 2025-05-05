@@ -17,5 +17,7 @@ private_subnet_cidr = "10.0.2.0/24"
 
 tags = {
   Project = "SecureCloudLab"
-  Owner   = "amandravillis"
+  Owner   = "your-name-or-team"
 }
+my_ip      = "89.210.77.154/32"
+aws_region = "eu-west-1"

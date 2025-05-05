@@ -107,13 +107,13 @@ resource "aws_security_group_rule" "allow_all_egress" {
 }
 
 resource "aws_security_group_rule" "allow_ssh_self" {
-  type                     = "ingress"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.default.id
-  source_security_group_id = aws_security_group.default.id
-  description              = "Allow SSH from same SG"
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = [var.my_ip]
+  security_group_id = aws_security_group.default.id
+  description       = "Allow SSH from public IP"
 
   lifecycle {
     create_before_destroy = true
@@ -127,6 +127,7 @@ resource "aws_security_group_rule" "allow_icmp_self" {
   protocol                 = "icmp"
   security_group_id        = aws_security_group.default.id
   source_security_group_id = aws_security_group.default.id
+  cidr_blocks              = [var.my_ip]
   description              = "Allow ICMP from same SG"
 
   lifecycle {

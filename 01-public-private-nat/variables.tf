@@ -43,6 +43,15 @@ variable "tags" {
   type        = map(string)
   default = {
     Project = "SecureCloudLab"
-    Owner   = "amandravillis"
+    Owner   = "your-name-or-team"
   }
+}
+variable "aws_region" {
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "eu-west-1"
+}
+variable "my_ip" {
+  description = "Your public IP address with CIDR mask, used for security group rules"
+  type        = string
 }
