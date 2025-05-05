@@ -77,10 +77,10 @@ cleanup.sh can be run independently or from setup.sh to destroy all resources.
 
 ## 🛡️ Security Notes
 
-✅ Enforces IMDSv2 for EC2 instances (http_tokens = "required")
-✅ Separate Security Groups for bastion and private hosts
-✅ SSH agent forwarding configured via user_data
-✅ Tags applied via merge(var.tags, {...})
+- ✅ Enforces IMDSv2 for EC2 instances (http_tokens = "required")
+- ✅ Separate Security Groups for bastion and private hosts
+- ✅ SSH agent forwarding configured via user_data
+- ✅ Tags applied via merge(var.tags, {...})
 
 ⚠️ Lab-Only Defaults
 
@@ -106,6 +106,7 @@ To prepare this project for production use, consider:
 
 ## 📦 Project Layout
 
+```
 secure-vpc-terraform/
 ├── 01-public-private-nat/
 │   ├── main.tf
@@ -118,6 +119,7 @@ secure-vpc-terraform/
     ├── ec2/
     ├── networking/
     └── vpc/
+```
 
 Each module follows the structure: *_tf, *_variables.tf, *_outputs.tf, *_versions.tf.
 
