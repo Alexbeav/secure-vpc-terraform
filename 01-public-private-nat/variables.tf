@@ -55,3 +55,8 @@ variable "my_ip" {
   description = "Your public IP address with CIDR mask, used for security group rules"
   type        = string
 }
+variable "project_name" {
+  description = "Prefix used for naming resources and tags across the project"
+  type        = string
+  default     = "bastion-lab"
+}

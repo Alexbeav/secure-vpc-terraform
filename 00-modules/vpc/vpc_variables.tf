@@ -4,7 +4,11 @@ variable "vpc_cidr_block" {
 }
 
 variable "tags" {
-  description = "Common tags to apply to all resources"
+  description = "Tags to apply to the VPC"
   type        = map(string)
-  default     = {}
+}
+
+variable "project_name" {
+  description = "Project name used for tagging"
+  type        = string
 }

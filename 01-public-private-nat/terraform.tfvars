@@ -1,7 +1,7 @@
 # 01-public-private-nat/terraform.tfvars
 
 # Replace with a valid public AMI in your region
-ami_id = "ami-0f0c3baa60262d5b9" # Ubuntu Server 22.04 LTS (HVM), SSD Volume Type
+ami_id = "ami-0f0c3baa60262d5b9"
 
 # Replace with the name of your existing EC2 key pair
 key_name = "lab-key"

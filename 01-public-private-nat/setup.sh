@@ -15,6 +15,20 @@ detect_public_ip() {
   curl -s https://checkip.amazonaws.com || curl -s https://api.ipify.org
 }
 
+# Reusable SSH agent setup
+setup_ssh_agent() {
+  if ! ssh-add -l >/dev/null 2>&1; then
+    echo -e "${YELLOW}⚙️  Starting SSH agent and adding key...${RESET}"
+    eval "$(ssh-agent -s)"
+    ssh-add "$KEY_PATH"
+  fi
+
+  if ! ssh-add -L | grep -q "$(ssh-keygen -y -f "$KEY_PATH" 2>/dev/null)"; then
+    echo "❌ SSH key $KEY_PATH not loaded. Aborting."
+    exit 1
+  fi
+}
+
 # Check required tools
 check_prerequisites() {
   echo -e "${YELLOW}🔍 Validating prerequisites...${RESET}"
@@ -28,6 +42,11 @@ check_prerequisites() {
     fi
   done
 
+  setup_ssh_agent
+
+  echo -e "${GREEN}✅ All required tools are installed.${RESET}"
+}
+
 print_saved_ip() {
   if grep -q "^my_ip" "$TFVARS"; then
     SAVED_IP=$(grep "^my_ip" "$TFVARS" | cut -d'"' -f2)
@@ -36,24 +55,6 @@ print_saved_ip() {
     echo -e "${YELLOW}⚠️ No 'my_ip' entry found in $TFVARS.${RESET}"
   fi
 }
-
-# Start SSH agent if not already running
-if ! ssh-add -l >/dev/null 2>&1; then
-  echo -e "${YELLOW}⚙️  Starting SSH agent and adding key...${RESET}"
-  eval "$(ssh-agent -s)"
-  ssh-add "$KEY_PATH"
-fi
-
-# Confirm key is loaded
-if ! ssh-add -L | grep -q "$(ssh-keygen -y -f "$KEY_PATH" 2>/dev/null)"; then
-  echo "❌ SSH key $KEY_PATH not loaded. Aborting."
-  exit 1
-fi
-
-  echo -e "${GREEN}✅ All required tools are installed.${RESET}"
-}
-
-
 
 # Handle tfvars
 prepare_tfvars() {
@@ -124,31 +125,65 @@ launch_lab() {
   fi
 }
 
+# Updated connect_to_bastion
 connect_to_bastion() {
-  echo -e "${YELLOW}🔐 Attempting to connect to bastion...${RESET}"
-  if ! terraform output -json public_ip >/dev/null 2>&1; then
+  echo -e "${YELLOW}🔐 Preparing SSH environment...${RESET}"
+  setup_ssh_agent
+
+  if ! PUBLIC_IP=$(terraform output -raw public_ip 2>/dev/null); then
     echo "❌ Could not retrieve public IP. Is the lab deployed?"
     return 1
   fi
 
-  PUBLIC_IP=$(terraform output -raw public_ip)
   echo -e "${GREEN}➡️  Connecting to: ubuntu@$PUBLIC_IP${RESET}"
   ssh -A -i "$KEY_PATH" "ubuntu@$PUBLIC_IP"
 }
 
-# Destroy lab
+# Updated review_and_confirm_tfvars
+review_and_confirm_tfvars() {
+  echo -e "${YELLOW}🔍 Reviewing existing values in $TFVARS...${RESET}"
+
+  declare -A vars=(
+    [key_name]="Key Pair Name"
+    [ami_id]="AMI ID"
+    [my_ip]="Your Public IP"
+    [instance_type]="EC2 Instance Type"
+    [aws_region]="AWS Region"
+  )
+
+  FREE_TIER_INSTANCES=("t2.micro" "t3.micro")
+
+  for var in "${!vars[@]}"; do
+    current=$(grep "^$var" "$TFVARS" | cut -d'"' -f2 || echo "")
+    if [[ -z "$current" ]]; then
+      echo "$var = \"\"" >> "$TFVARS"
+    fi
+    read -rp "➤ ${vars[$var]} [$current]: " new
+    new="${new:-$current}"
+    sed -i "s|^$var.*|$var = \"$new\"|" "$TFVARS"
+
+    if [[ "$var" == "instance_type" && ! " ${FREE_TIER_INSTANCES[@]} " =~ " $new " ]]; then
+      echo -e "${YELLOW}⚠️ WARNING: '$new' is not Free Tier eligible. Charges may apply.${RESET}"
+    fi
+  done
+
+  echo -e "${GREEN}✅ Variables updated.${RESET}"
+}
+
+# Destroy lab function
 destroy_lab() {
   echo -e "${YELLOW}🧨 Destroying Terraform lab...${RESET}"
-  terraform destroy
+  terraform destroy -auto-approve
 }
 
 # Menu
 while true; do
   echo -e "\n${YELLOW}==== $PROJECT_NAME ====${RESET}"
   echo "1) ✅ Validate prerequisites"
-  echo "2) 🚀 Launch lab"
-  echo "3) 🔐 Connect to bastion"
-  echo "4) 🧨 Destroy lab"
+  echo "2) 🔄 Review & confirm Terraform variables"
+  echo "3) 🚀 Launch lab"
+  echo "4) 🔐 Connect to bastion"
+  echo "5) 🧨 Destroy lab"
   echo "q) ❌ Quit"
   read -rp "Choose an option: " choice
 
@@ -160,16 +195,19 @@ while true; do
       print_saved_ip
       ;;
     2)
+      review_and_confirm_tfvars
+      ;;
+    3)
       check_prerequisites
       prepare_tfvars
       prepare_ssh_key
       print_saved_ip
       launch_lab
       ;;
-    3)
+    4)
       connect_to_bastion
       ;;
-    4)
+    5)
       destroy_lab
       ;;
     q|Q)
