@@ -68,4 +68,4 @@ This repo is designed to help:
 - Hiring managers or recruiters assess Terraform and IaC skills with real-world structure
 
 ## 📖 License
-This repository is licensed under the MIT License. See LICENSE for details.
+This repository is licensed under the MIT License. See [LICENSE](https://github.com/Alexbeav/secure-vpc-terraform/blob/main/LICENSE) for details.
