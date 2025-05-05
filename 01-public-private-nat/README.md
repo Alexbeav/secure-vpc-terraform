@@ -88,7 +88,7 @@ This repo is safe for demos and labs, but you should harden it before production
 
 | Lab Behavior                       | Production Recommendation                       |
 | ---------------------------------- | ----------------------------------------------- |
-| `0.0.0.0/0` allowed for SSH        | Restrict to known IP ranges or VPN-only access  |
+| SSH allowed only from your IP      | In production, use VPN or bastion subnet CIDRs    |
 | No VPC Flow Logs                   | Enable for auditing and troubleshooting         |
 | NAT Gateway always-on              | Use scheduled resources or instance-based NAT   |
 | No IAM roles or S3 logging buckets | Add least-privilege IAM and centralized logs    |
