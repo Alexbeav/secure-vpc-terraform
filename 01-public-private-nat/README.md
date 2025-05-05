@@ -66,16 +66,16 @@ chmod +x cleanup.sh
 ./cleanup.sh
 ```
 
-Although included in the setup.sh, this script will destroy the lab
+cleanup.sh can be run independently or from setup.sh to destroy all resources.
 
-🧪 Use Cases
+## 🧪 Use Cases
 
 - Practice SSH agent forwarding and EC2 access patterns
 - Demonstrate public/private subnet isolation
 - Build on a real-world Terraform module structure
 - Integrate Terraform with security tools (tfsec, tflint, etc.)
 
-🛡️ Security Notes
+## 🛡️ Security Notes
 
 ✅ Enforces IMDSv2 for EC2 instances (http_tokens = "required")
 ✅ Separate Security Groups for bastion and private hosts
@@ -94,7 +94,7 @@ This repo is safe for demos and labs, but you should harden it before production
 | No IAM roles or S3 logging buckets | Add least-privilege IAM and centralized logs    |
 | Static SSH key in `tfvars`         | Use EC2 Instance Connect or AWS Secrets Manager |
 
-📈 Transition to Production (Optional Enhancements)
+## 📈 Transition to Production (Optional Enhancements)
 
 To prepare this project for production use, consider:
 
@@ -104,7 +104,8 @@ To prepare this project for production use, consider:
 ✅ Move secrets and AMI IDs to SSM Parameter Store
 ✅ Enable EC2 Instance Connect instead of SSH keys
 
-📦 Project Layout
+## 📦 Project Layout
+
 secure-vpc-terraform/
 ├── 01-public-private-nat/
 │   ├── main.tf
@@ -120,7 +121,7 @@ secure-vpc-terraform/
 
 Each module follows the structure: *_tf, *_variables.tf, *_outputs.tf, *_versions.tf.
 
-✅ Pre-Commit Hooks
+## ✅ Pre-Commit Hooks
 
 Hooks automatically run:
 
@@ -135,10 +136,10 @@ To enable:
 To run manually:
 ```pre-commit run --all-files```
 
-📄 License
+## 📄 License
 
 This project is licensed under the MIT License. See LICENSE for details.
 
-🏷️ Version
+## 🏷️ Version
 
 v1.0 — Initial stable release.
