@@ -98,11 +98,11 @@ This repo is safe for demos and labs, but you should harden it before production
 
 To prepare this project for production use, consider:
 
-✅ Enable VPC Flow Logs for visibility (note: incurs CloudWatch costs)
-✅ Add an S3 logging bucket for VPC/NAT/CloudTrail
-✅ Create an IAM role for EC2 and attach it via iam_instance_profile
-✅ Move secrets and AMI IDs to SSM Parameter Store
-✅ Enable EC2 Instance Connect instead of SSH keys
+- ✅ Enable VPC Flow Logs for visibility (note: incurs CloudWatch costs)
+- ✅ Add an S3 logging bucket for VPC/NAT/CloudTrail
+- ✅ Create an IAM role for EC2 and attach it via iam_instance_profile
+- ✅ Move secrets and AMI IDs to SSM Parameter Store
+- ✅ Enable EC2 Instance Connect instead of SSH keys
 
 ## 📦 Project Layout
 
@@ -137,6 +137,13 @@ To enable:
 
 To run manually:
 ```pre-commit run --all-files```
+
+## 💡 Future Improvements
+
+- CI/CD integration via GitHub Actions (migrate from local)
+- Use S3 Remote State instead of Local
+- Add CloudTrail/GuardDuty for logging & monitoring
+- A copy of this could be used to set up a secure web app example
 
 ## 📄 License
 
