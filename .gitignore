@@ -24,3 +24,8 @@ terraform.tfvars.json
 .DS_Store
 *.code-workspace
 secure-vpc-terraform.code-workspace
+
+# Teraform Visual files
+plan.json
+plan.out
+terraform-visual-report/
